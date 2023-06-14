@@ -10,10 +10,22 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var amountOfWater = 0.0
-    
+    @State private var liter = 1.0
+    @State private var deciliter = 0.10
+    @State private var centiliter =  0.010
+    @State private var mililiter = 0.0010
     @FocusState private var amountIsFocused: Bool
     
-    let metricSystem = ["L", "dL", "cl", "mL"]
+    var measurementComponents = ["liter", "deciliter", "centiliter", "mililiter"]
+    @State private var selectedmeasurementComponents = "deciliter"
+    
+//    var measurment: Double {
+//        let deciliterMeasurment = Double(deciliter * 10)
+//        let centiliterMeasurment = Double(centiliter * 100)
+//        let mililiterMeasurment = Double(mililiter * 1000)
+//
+//        return measurment
+//    }
     
     var body: some View {
         NavigationView {
@@ -23,7 +35,11 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                 }
                 Section {
-                    
+                    Picker("Select ", selection: $selectedmeasurementComponents) {
+                        ForEach(measurementComponents, id: \.self) {
+                            Text($0)
+                        }
+                    }
                 }
             }
             .navigationTitle("Hydrocalc")
