@@ -9,45 +9,43 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var amountOfWater = 0.0
-    @State private var liter = 1.0
-    @State private var deciliter = 0.10
-    @State private var centiliter =  0.010
-    @State private var mililiter = 0.0010
-    @FocusState private var amountIsFocused: Bool
+    @State private var inputValue = 0.0
     
-    var measurementComponents = ["liter", "deciliter", "centiliter", "mililiter"]
-    @State private var selectedmeasurementComponents = "deciliter"
+    @State private var selectedlitersInputUnit = UnitVolume.liters
+    @State private var selectedDecilitersInputUnit = UnitVolume.deciliters
+    @State private var selectedCentilitersInputUnit = UnitVolume.centiliters
+    @State private var selectedMillilitersInputUnit = UnitVolume.milliliters
     
-//    var measurment: Double {
-//        let deciliterMeasurment = Double(deciliter * 10)
-//        let centiliterMeasurment = Double(centiliter * 100)
-//        let mililiterMeasurment = Double(mililiter * 1000)
-//
-//        return measurment
-//    }
+    let volumeUnits: [UnitVolume] = [.liters, .deciliters, .centiliters, .milliliters]
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Water", value: $amountOfWater, format: .number)
+                    TextField("Amount of water", value: $inputValue, format: .number)
                         .keyboardType(.decimalPad)
+                } header: {
+                    Text("Amount of water in liters")
                 }
+                
                 Section {
-                    Picker("Select ", selection: $selectedmeasurementComponents) {
-                        ForEach(measurementComponents, id: \.self) {
-                            Text($0)
+                    Picker("Unit volume", selection: $selectedDecilitersInputUnit) {
+                        ForEach(volumeUnits, id: \.self) { unit in
+                            Text(unit.symbol)
                         }
                     }
+                    .pickerStyle(.segmented)
+                } header: {
+                    Text("Select a measurement value")
                 }
+                
             }
             .navigationTitle("Hydrocalc")
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
-                        amountIsFocused = false
+                       // amountIsFocused = false
                     }
                 }
             }
