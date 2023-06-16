@@ -10,11 +10,14 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var inputValue = 0.0
+    @State private var conversionValue = 0.0
     
     @State private var selectedlitersInputUnit = UnitVolume.liters
     @State private var selectedDecilitersInputUnit = UnitVolume.deciliters
     @State private var selectedCentilitersInputUnit = UnitVolume.centiliters
     @State private var selectedMillilitersInputUnit = UnitVolume.milliliters
+    
+    @FocusState private var inputValueFocused: Bool
     
     let volumeUnits: [UnitVolume] = [.liters, .deciliters, .centiliters, .milliliters]
     
@@ -24,12 +27,18 @@ struct ContentView: View {
                 Section {
                     TextField("Amount of water", value: $inputValue, format: .number)
                         .keyboardType(.decimalPad)
+                        .focused($inputValueFocused)
+                    Picker("Input unit volume", selection: $selectedDecilitersInputUnit) {
+                        ForEach(volumeUnits, id: \.self) { unit in
+                            Text(unit.symbol)
+                        }
+                    }
                 } header: {
                     Text("Amount of water in liters")
                 }
                 
                 Section {
-                    Picker("Unit volume", selection: $selectedDecilitersInputUnit) {
+                    Picker("Convert to unit volume", selection: $selectedDecilitersInputUnit) {
                         ForEach(volumeUnits, id: \.self) { unit in
                             Text(unit.symbol)
                         }
@@ -38,6 +47,12 @@ struct ContentView: View {
                 } header: {
                     Text("Select a measurement value")
                 }
+                Section {
+                    TextField("Amount of water", value: $conversionValue, format: .number)
+                        .focused($inputValueFocused)
+                } header: {
+                    Text("Result")
+                }
                 
             }
             .navigationTitle("Hydrocalc")
@@ -45,7 +60,7 @@ struct ContentView: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
-                       // amountIsFocused = false
+                       inputValueFocused = false
                     }
                 }
             }
