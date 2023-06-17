@@ -21,6 +21,23 @@ struct ContentView: View {
     
     let volumeUnits: [UnitVolume] = [.liters, .deciliters, .centiliters, .milliliters]
     
+    var convertedValue: Double {
+        let inputValueInLiters = inputValue
+
+        switch selectedDecilitersInputUnit {
+        case .liters:
+            return inputValueInLiters * 10
+        case .deciliters:
+            return inputValueInLiters
+        case .centiliters:
+            return inputValueInLiters * 100
+        case .milliliters:
+            return inputValueInLiters * 1000
+        default:
+            return inputValueInLiters
+        }
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -28,7 +45,7 @@ struct ContentView: View {
                     TextField("Amount of water", value: $inputValue, format: .number)
                         .keyboardType(.decimalPad)
                         .focused($inputValueFocused)
-                    Picker("Input unit volume", selection: $selectedDecilitersInputUnit) {
+                    Picker("Input unit volume", selection: $selectedlitersInputUnit) {
                         ForEach(volumeUnits, id: \.self) { unit in
                             Text(unit.symbol)
                         }
@@ -48,12 +65,8 @@ struct ContentView: View {
                     Text("Select a measurement value")
                 }
                 Section {
-                    TextField("Amount of water", value: $conversionValue, format: .number)
-                        .focused($inputValueFocused)
-                } header: {
-                    Text("Result")
-                }
-                
+                    Text("Result: \(convertedValue, specifier: "%.2f") \(selectedDecilitersInputUnit.symbol)")
+                   }
             }
             .navigationTitle("Hydrocalc")
             .toolbar {
