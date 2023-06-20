@@ -26,15 +26,15 @@ struct ContentView: View {
 
         switch selectedDecilitersInputUnit {
         case .liters:
-            return inputValueInLiters * 10
+            return inputValueInLiters * 1
         case .deciliters:
-            return inputValueInLiters
+            return inputValueInLiters * 10
         case .centiliters:
             return inputValueInLiters * 100
         case .milliliters:
             return inputValueInLiters * 1000
         default:
-            return inputValueInLiters
+            return inputValueInLiters 
         }
     }
     
